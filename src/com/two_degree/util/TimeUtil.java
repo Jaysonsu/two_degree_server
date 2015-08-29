@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * ʱ�乤����
+ * 时间工具类
  * @author android_djf
  *
  */

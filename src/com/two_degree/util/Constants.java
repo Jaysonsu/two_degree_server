@@ -1,19 +1,19 @@
 package com.two_degree.util;
 /**
- * ϵͳ����
+ * 系统常量
  * @author android_djf
  *
  */
 public class Constants {
 
-	//RSA��Ҫ�Ĺ�Կ��
-	/* ��Կ���� base64 code */
+	//RSA需要的公钥匙
+	/* 密钥内容 base64 code */
 	public static String PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCfRTdcPIH10gT9f31rQuIInLwe"
 			+ "\r" + "7fl2dtEJ93gTmjE9c2H+kLVENWgECiJVQ5sonQNfwToMKdO0b3Olf4pgBKeLThra" + "\r"
 			+ "z/L3nYJYlbqjHC3jTjUnZc0luumpXGsox62+PuSGBlfb8zJO6hix4GV/vhyQVCpG" + "\r"
 			+ "9aYqgE7zyTRZYX9byQIDAQAB" + "\r";
 	
-	//RSA��Ҫ��˽Կ
+	//RSA需要的私钥
 	public static String PRIVATE_KEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAJ9FN1w8gfXSBP1/"
 			+ "\r" + "fWtC4gicvB7t+XZ20Qn3eBOaMT1zYf6QtUQ1aAQKIlVDmyidA1/BOgwp07Rvc6V/" + "\r"
 			+ "imAEp4tOGtrP8vedgliVuqMcLeNONSdlzSW66alcayjHrb4+5IYGV9vzMk7qGLHg" + "\r"
@@ -29,3 +29,4 @@ public class Constants {
 			+ "MFaLJXGY9ok45wXrcqkJgM+SN6i8hQeujXESVHYatAIL/1DgLi+u46EFD69fw0w+" + "\r" + "c7o0HLlMsYPAzJw="
 			+ "\r";
 }
+

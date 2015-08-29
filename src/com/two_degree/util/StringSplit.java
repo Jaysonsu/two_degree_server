@@ -3,7 +3,7 @@ package com.two_degree.util;
 public class StringSplit {
 
 	/**
-	 * ���ڴ���ͼ��
+	 * 用于处理图像
 	 * @param imageUrl
 	 * @return
 	 */
