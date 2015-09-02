@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.two_degree.bean.Comment;
 import com.two_degree.service.CommentService;
-import com.two_degree.service.imp.CommentServiceImp;
+import com.two_degree.service.impl.CommentServiceImpl;
 import com.two_degree.util.ResultCode;
 import com.two_degree.util.TimeUtil;
 /**

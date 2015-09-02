@@ -3,6 +3,8 @@
 	<name>helloworld</name>
 	<comment></comment>
 	<projects>
+		<project>helloworld</project>
+		<project>NoteforSSM</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

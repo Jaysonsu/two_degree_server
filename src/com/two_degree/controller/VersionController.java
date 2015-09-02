@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.two_degree.bean.AppVersion;
 import com.two_degree.service.VersionService;
-import com.two_degree.service.imp.VersionServiceImp;
+import com.two_degree.service.impl.VersionServiceImpl;
 import com.two_degree.util.ResultCode;
 
 /**

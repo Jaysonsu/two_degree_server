@@ -28,7 +28,7 @@ import com.two_degree.util.StringSplit;
  * �û�����������
  * 
  * @author android_djf
- *
+ * 
  */
 @Controller
 @RequestMapping("/user")
@@ -61,9 +61,9 @@ public class UserController {
 		String phone = request.getParameter("phone");
 		String password = request.getParameter("password");
 		String name = request.getParameter("name");
-		System.out.println("ע��ӿ�/���յ��û����ݲ���" + phone + "����" + password + "�ǳ�:"
-				+ name);
-		User u = userService.queryUserforName(phone);
+		System.out.println("ע��ӿ�/���յ��û����ݲ���" + phone + "����" + password
+				+ "�ǳ�:" + name);
+		User u = userService.queryUserByPhone(phone);
 		if (u != null) {
 			result.put("data", ResultCode.SUCCESS);
 			result.put("respcode", ResultCode.SUCCESS);
@@ -111,7 +111,7 @@ public class UserController {
 		user.setPhone(phone);
 		user.setPassword(password);
 
-		User u = userService.queryUserforName(phone);
+		User u = userService.queryUserByPhone(phone);
 		if (u != null) {
 
 			User users = userService.userLogin(user);
@@ -124,20 +124,21 @@ public class UserController {
 				loginResult.setVip(users.getVip());
 				result.put("data", loginResult);
 				result.put("respcode", ResultCode.SUCCESS);
+				
 				result.put("errorcode", "");
-				result.put("message", "��½�ɹ�!");
+				result.put("message", "登录成功!");
 			} else {
 				result.put("data", "");
 				result.put("respcode", ResultCode.FAIL);
 				result.put("errorcode", ResultCode.FAIL);
-				result.put("message", "��½ʧ��!");
+				result.put("message", "密码错误!");
 			}
 
 		} else {
 			result.put("data", "");
-			result.put("respcode", ResultCode.USEREXIST);
+			result.put("respcode", ResultCode.UNUSEREXIST);
 			result.put("errorcode", "");
-			result.put("message", "��½ʧ��!");
+			result.put("message", "用户不存在!");
 		}
 
 		return result;
@@ -160,92 +161,92 @@ public class UserController {
 		int id = Integer.valueOf(request.getParameter("id"));
 		String userOldPwd = request.getParameter("oldpassword");
 		String userNewPwd = request.getParameter("newpassword");
-		
-		
-			User user = userService.getUserInfoId(id);
-			if (user != null) {
-				if (userOldPwd.equals(user.getPassword())) {
-					user.setPassword(userNewPwd);
-					userService.updateUserPwd(user);
-					result.put("message", "�޸�����ɹ�!");
-					result.put("respcode", ResultCode.SUCCESS);
-					result.put("data", ResultCode.SUCCESS);
-					result.put("errorcode", "");
-				} else {
-					result.put("message", "���������");
-					result.put("respcode", ResultCode.FAIL);
-					result.put("data", "");
-					result.put("errorcode", ResultCode.OLDPWDFAIL);
-				}
+
+		User user = userService.getUserInfoId(id);
+		if (user != null) {
+			if (userOldPwd.equals(user.getPassword())) {
+				user.setPassword(userNewPwd);
+				userService.updateUserPwd(user);
+				result.put("message", "�޸�����ɹ�!");
+				result.put("respcode", ResultCode.SUCCESS);
+				result.put("data", ResultCode.SUCCESS);
+				result.put("errorcode", "");
 			} else {
-				result.put("message", "�û�������");
+				result.put("message", "���������");
 				result.put("respcode", ResultCode.FAIL);
 				result.put("data", "");
-				result.put("errorcode", ResultCode.UNUSEREXIST);
+				result.put("errorcode", ResultCode.OLDPWDFAIL);
 			}
-		
+		} else {
+			result.put("message", "�û�������");
+			result.put("respcode", ResultCode.FAIL);
+			result.put("data", "");
+			result.put("errorcode", ResultCode.UNUSEREXIST);
+		}
+
 		return result;
 
 	}
 
 	/**
 	 * �޸��û�ͼ��
+	 * 
 	 * @param request
 	 * @param file
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	@RequestMapping(value="updateUserIcon")
+	@RequestMapping(value = "updateUserIcon")
 	@ResponseBody
 	public Map<String, Object> uploadUserIcon(HttpServletRequest request,
 			@RequestParam("file") MultipartFile file) throws Exception {
-		Map<String,Object> result=new HashMap<String, Object>();
-		User user=new User();
+		Map<String, Object> result = new HashMap<String, Object>();
+		User user = new User();
 		int id = Integer.valueOf(request.getParameter("id"));
-		System.out.println("�޸�ͼ�񴫵ݵ�id:"+id);
+		System.out.println("�޸�ͼ�񴫵ݵ�id:" + id);
 		String realPath = request.getSession().getServletContext()
 				.getRealPath("userIcon/");
-		
+
 		String fileName = file.getOriginalFilename();
 		System.out.println("�ϴ����ļ���");
-		File path=new File(realPath);
-		if(!path.exists()){
+		File path = new File(realPath);
+		if (!path.exists()) {
 			path.mkdirs();
 		}
-		
-		if(!fileName.contains(".jpg") || !fileName.contains(".png")){
-			
-			
-			User u=userService.getUserInfoId(id);
-			if(u.getImage()!=null){
-				File userIcon=new File(realPath+"/"+StringSplit.userImage(u.getImage()));
-				if(userIcon.exists()){
+
+		if (!fileName.contains(".jpg") || !fileName.contains(".png")) {
+
+			User u = userService.getUserInfoId(id);
+			if (u.getImage() != null) {
+				File userIcon = new File(realPath + "/"
+						+ StringSplit.userImage(u.getImage()));
+				if (userIcon.exists()) {
 					userIcon.delete();
 				}
 			}
-			
+
 			File destFile = new File(realPath, fileName);
 			if (!destFile.exists()) {
 				destFile.mkdirs();
 			}
 			file.transferTo(destFile);
 			String userIcon = "/userIcon/" + fileName;
-			System.out.println("�û�ͼ�����ڵ�ַ:" + realPath+"/"+fileName);
+			System.out.println("�û�ͼ�����ڵ�ַ:" + realPath + "/" + fileName);
 			user.setImage(userIcon);
 			user.setId(id);
 			userService.updateUserIcon(user);
-			
+
 			result.put("data", "0");
 			result.put("errorcode", "");
 			result.put("message", "�ϴ��û�ͼ��ɹ�");
 			result.put("respcode", ResultCode.SUCCESS);
-		}else{
+		} else {
 			result.put("data", "");
 			result.put("errorcode", ResultCode.VINT);
 			result.put("message", "�ļ����Ϸ�");
 			result.put("respcode", ResultCode.FAIL);
 		}
-		
+
 		return result;
 
 	}
@@ -282,8 +283,8 @@ public class UserController {
 		String address = request.getParameter("address");
 		String fileName = file.getOriginalFilename();
 
-		System.out.println("�����û����ϴ��ݹ����Ĳ���" + "�ǳ�:" + name + "����" + city
-				+ "����:" + age + "�Ա�" + sex + "��ַ:" + address + "\n"
+		System.out.println("�����û����ϴ��ݹ����Ĳ���" + "�ǳ�:" + name + "����"
+				+ city + "����:" + age + "�Ա�" + sex + "��ַ:" + address + "\n"
 				+ "�û�ͼ���ŵĵ�ַ:" + realPath);
 
 		File path = new File(realPath);
@@ -345,7 +346,7 @@ public class UserController {
 	}
 
 	/**
-	 * ����û�id��ȡ�û���ϸ��Ϣ 
+	 * ����û�id��ȡ�û���ϸ��Ϣ
 	 * 
 	 * @param request
 	 * @return
@@ -359,34 +360,33 @@ public class UserController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		int id = Integer.parseInt(request.getParameter("id"));
 
-		System.out.println("�û�id:" + id);
-			User info =null;
-			
-				User user = userService.getUserInfoId(id);
-				if (user != null) {
-					info= new User();
-					info.setName(user.getName());
-					info.setImage(user.getImage());
-					info.setPhone(user.getPhone());
-					info.setCity(user.getCity());
-					info.setAge(user.getAge());
-					info.setSex(user.getSex());
-					info.setAddress(user.getAddress());
-					info.setGold(user.getGold());
-					info.setVip(user.getVip());
+		System.out.println("用户id:" + id);
+		User info = null;
 
-					result.put("message", "��ѯ�ɹ�");
-					result.put("respcode", ResultCode.SUCCESS);
-					result.put("data", info);
-					result.put("errorcode", "");
-				} else {
-					// û�в�ѯ�����û�
-					result.put("message", "�û�������");
-					result.put("respcode", ResultCode.FAIL);
-					result.put("data", "");
-					result.put("errorcode", ResultCode.UNUSEREXIST);
-				}
+		User user = userService.getUserInfoId(id);
+		if (user != null) {
+			info = new User();
+			info.setName(user.getName());
+			info.setImage(user.getImage());
+			info.setPhone(user.getPhone());
+			info.setCity(user.getCity());
+			info.setAge(user.getAge());
+			info.setSex(user.getSex());
+			info.setAddress(user.getAddress());
+			info.setGold(user.getGold());
+			info.setVip(user.getVip());
 
+			result.put("message", "��ѯ�ɹ�");
+			result.put("respcode", ResultCode.SUCCESS);
+			result.put("data", info);
+			result.put("errorcode", "");
+		} else {
+			// û�в�ѯ�����û�
+			result.put("message", "�û�������");
+			result.put("respcode", ResultCode.FAIL);
+			result.put("data", "");
+			result.put("errorcode", ResultCode.UNUSEREXIST);
+		}
 
 		return result;
 

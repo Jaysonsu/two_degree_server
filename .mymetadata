@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-module
   type="WEB"
-  name="helloworld"
+  name="two_degree_server"
   id="myeclipse.1440668585553"
-  context-root="/helloworld"
+  context-root="/two_degree_server"
   j2ee-spec="5.0"
-  archive="helloworld.war">
+  archive="two_degree_server.war">
   <attributes>
     <attribute name="webrootdir" value="WebRoot" />
   </attributes>
